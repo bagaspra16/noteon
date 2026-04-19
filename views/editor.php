@@ -2236,6 +2236,14 @@ $firstName = explode(' ', $userName)[0];
       #customize-panel.open {
         transform: translateX(50%) translateY(0) scale(1);
       }
+
+      /* Lift sidebar bottom actions for mobile ergonomics */
+      .sidebar-footer {
+        padding-bottom: 4.5rem; /* Raise Log out & New Workspace even higher */
+      }
+      .sidebar-quick-actions {
+        padding-bottom: 1rem; /* Slight lift for New Page */
+      }
     }
   </style>
 </head>

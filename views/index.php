@@ -26,7 +26,7 @@ if (isset($_SESSION['user_id'])) {
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Custom styles -->
-  <link rel="stylesheet" href="/noteon/assets/css/style.css?v=5">
+  <link rel="stylesheet" href="/noteon/assets/css/style.css?v=6">
 
   <style>
     /* Ensure html/body carry no extra margin */

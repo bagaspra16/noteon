@@ -1573,7 +1573,27 @@ body.focus-mode .sidebar:hover { opacity: 1; }
   .hero-cta-row { flex-direction: column; width: 100%; max-width: 320px; }
   .hero-cta-row > button { width: 100%; justify-content: center; }
   .silk-hero-nav { padding: 1.25rem 1.5rem; }
-  .modal-card { max-width: 90%; padding: 1.5rem; margin: 0 1rem; }
+  
+  /* Even smaller accent row */
+  .hero-accent-row { 
+    margin-top: 1.5rem !important; 
+    gap: 0.625rem !important; 
+    font-size: 0.55rem !important; 
+    letter-spacing: 0.15em !important; 
+  }
+  .hero-accent-sep { height: 6px !important; }
+
+  /* Compact Modals for Mobile */
+  .modal-card { 
+    max-width: 300px !important; 
+    padding: 1.25rem 1rem !important; 
+    margin: 0 auto !important; 
+    border-radius: 12px !important; 
+  }
+  .modal-card h2 { font-size: 1rem !important; margin-bottom: 1rem !important; }
+  .modal-input { padding: 0.5rem 0.75rem !important; font-size: 0.8125rem !important; }
+  .btn-primary { padding: 0.5rem 1rem !important; font-size: 0.8125rem !important; margin-top: 1rem !important; }
+  
   .feature-strip { padding: 4rem 1.5rem; }
 }
 
