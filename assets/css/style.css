@@ -885,8 +885,8 @@ body {
 
 /* ---- Page title ------------------------------------------- */
 .page-title-editor {
-  font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-  font-size: 2.75rem;
+  font-family: var(--editor-font);
+  font-size: calc(2.75rem * var(--editor-base-size));
   font-weight: 400;
   color: #FFFFFF;
   letter-spacing: -0.025em;
@@ -1012,9 +1012,9 @@ body {
 
 /* ---- Text block ------------------------------------------- */
 .block-text {
-  font-family: var(--editor-font, 'Inter'), sans-serif;
+  font-family: var(--editor-font);
   color: #c4c4c8;
-  font-size: 1.0625rem;
+  font-size: calc(1.0625rem * var(--editor-base-size));
   line-height: 1.8;
   outline: none;
   width: 100%;
@@ -1039,9 +1039,9 @@ body {
 
 /* ---- Heading block ---------------------------------------- */
 .block-heading-1 {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--editor-font);
   color: #FFFFFF;
-  font-size: 1.875rem;
+  font-size: calc(1.875rem * var(--editor-base-size));
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.25;
@@ -1065,9 +1065,9 @@ body {
 
 /* Alias for existing 'heading' type — keep both */
 .block-heading {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--editor-font);
   color: #FFFFFF;
-  font-size: 1.875rem;
+  font-size: calc(1.875rem * var(--editor-base-size));
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.25;
@@ -1144,7 +1144,7 @@ body {
 .checklist-label {
   flex: 1;
   color: #c4c4c8;
-  font-size: 1.0625rem;
+  font-size: calc(1.0625rem * var(--editor-base-size));
   line-height: 1.7;
   outline: none;
   min-height: 1.7em;
@@ -1535,10 +1535,92 @@ body.focus-mode .sidebar:hover { opacity: 1; }
    RESPONSIVE
    ============================================================ */
 
+/* Mobile menu toggle button in topbar */
+.btn-mobile-menu {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #a1a1aa;
+  padding: 0.4rem;
+  margin-right: 0.25rem;
+  border-radius: 6px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.btn-mobile-menu:hover { color: #f4f4f5; background: rgba(255, 255, 255, 0.08); }
+
+/* Backdrop overlay */
+.mobile-sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 90;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.mobile-sidebar-backdrop.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (max-width: 900px) {
+  /* Landing page constraints */
+  .hero-cta-row { flex-direction: column; width: 100%; max-width: 320px; }
+  .hero-cta-row > button { width: 100%; justify-content: center; }
+  .silk-hero-nav { padding: 1.25rem 1.5rem; }
+  .modal-card { max-width: 90%; padding: 1.5rem; margin: 0 1rem; }
+  .feature-strip { padding: 4rem 1.5rem; }
+}
+
 @media (max-width: 768px) {
-  .sidebar { display: none; }
-  .editor-content { padding: 2.5rem 1.25rem 8rem; }
-  .page-title-editor { font-size: 1.875rem; }
+  .btn-mobile-menu { display: flex; }
+
+  /* Topbar adjustment */
+  .editor-topbar { padding: 0 1rem; min-height: 52px; gap: 0.25rem; }
+  .sidebar-toggle-btn { display: none !important; } /* Hide the floating button on mobile */
+
+  /* Sidebar becomes off-canvas drawer */
+  .sidebar { 
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    transform: translateX(-100%);
+    width: 280px;
+    min-width: 280px;
+    display: flex !important; /* Override inline styles from toggle logic */
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 12px 0 32px rgba(0,0,0,0.5);
+  }
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  /* Editor Main Content */
+  .editor-content { padding: 2rem 1.25rem 6rem; }
+  .editor-header-inner { padding: 2.5rem 1.25rem 1rem; max-width: 100%; }
+  .page-title-editor { font-size: 1.75rem; }
+
+  /* Customize panel placement on mobile */
+  #customize-panel {
+    top: 60px;
+    right: 50%;
+    transform: translateX(50%) scale(0.98);
+    width: 90%;
+    max-width: 320px;
+  }
+  #customize-panel.open {
+    transform: translateX(50%) scale(1);
+    display: flex; /* Ensure it is flexible */
+  }
 }
 
 /* ==================================================================

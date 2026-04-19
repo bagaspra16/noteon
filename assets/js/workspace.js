@@ -15,19 +15,22 @@ const WorkspaceManager = (() => {
   // ------------------------------------------------------------------
   async function init() {
     const data = await apiGet('/noteon/api/workspace.php?action=list');
+    const nameEl = document.getElementById('ws-name-display');
+    
     if (!data) {
-      console.error('WorkspaceManager.init: no data returned (API error or not logged in)');
+      console.error('WorkspaceManager.init: API error');
+      if (nameEl) nameEl.textContent = 'Offline?';
       return;
     }
     if (!data.workspaces) {
-      console.error('WorkspaceManager.init: unexpected response', data);
+      if (nameEl) nameEl.textContent = 'Error';
       return;
     }
 
     workspaces = data.workspaces;
 
     if (workspaces.length === 0) {
-      // No workspaces — ask user to create one immediately
+      if (nameEl) nameEl.textContent = 'No Workspace';
       openModal();
       return;
     }
@@ -203,10 +206,30 @@ const WorkspaceManager = (() => {
     renderDropdown();
     const dropdown = document.getElementById('ws-dropdown');
     const switcher = document.getElementById('btn-workspace-switcher');
-    const rect = switcher.getBoundingClientRect();
+    
+    // Safety check
+    if (!dropdown || !switcher) return;
 
-    dropdown.style.left = `${rect.left}px`;
-    dropdown.style.top = `${rect.bottom + 6}px`;
+    const rect = switcher.getBoundingClientRect();
+    const mobileMenuBtn = document.getElementById('btn-mobile-menu');
+    const isMobile = (mobileMenuBtn && getComputedStyle(mobileMenuBtn).display !== 'none') || window.innerWidth <= 768;
+    
+    if (isMobile) {
+      // Pin to top of screen with safe margin
+      dropdown.style.position = 'fixed';
+      dropdown.style.left = '50%';
+      dropdown.style.top = '10px';
+      dropdown.style.transform = 'translateX(-50%)';
+      dropdown.style.width = 'calc(100% - 20px)';
+      dropdown.style.maxWidth = '320px';
+    } else {
+      dropdown.style.position = 'fixed';
+      dropdown.style.left = `${rect.left}px`;
+      dropdown.style.top = `${rect.bottom + 6}px`;
+      dropdown.style.transform = 'none';
+      dropdown.style.width = '250px';
+    }
+    
     dropdown.style.display = 'block';
     dropdownOpen = true;
   }
@@ -218,8 +241,14 @@ const WorkspaceManager = (() => {
 
   // ---- Event bindings -------------------------------------------
 
-  document.getElementById('btn-workspace-switcher').addEventListener('click', (e) => {
+  const switcherBtn = document.getElementById('btn-workspace-switcher');
+  switcherBtn?.addEventListener('click', (e) => {
     e.stopPropagation();
+    // Visual feedback for mobile debugging: flash the button background
+    if (window.innerWidth <= 768) {
+      switcherBtn.style.background = 'rgba(255, 171, 0, 0.2)';
+      setTimeout(() => { switcherBtn.style.background = ''; }, 200);
+    }
     dropdownOpen ? closeDropdown() : openDropdown();
   });
 

@@ -28,6 +28,11 @@ $firstName = explode(' ', $userName)[0];
     /* =====================================================================
    RESET & ROOT
    ===================================================================== */
+    :root {
+      --editor-font: 'Cormorant Garamond', serif;
+      --editor-base-size: 1;
+    }
+
     *,
     *::before,
     *::after {
@@ -737,27 +742,25 @@ $firstName = explode(' ', $userName)[0];
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
       z-index: 200;
       padding: 1rem;
-      display: none;
+      display: flex;
       flex-direction: column;
       gap: 1.25rem;
       font-family: 'Inter', sans-serif;
-      animation: panelIn 0.15s ease;
+      transform-origin: top right;
+      transform: translateY(-8px) scale(0.96);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                  transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), 
+                  visibility 0.2s;
     }
 
     #customize-panel.open {
-      display: flex;
-    }
-
-    @keyframes panelIn {
-      from {
-        opacity: 0;
-        transform: translateY(-6px) scale(0.98);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
     }
 
     .cp-section-title {
@@ -1357,8 +1360,8 @@ $firstName = explode(' ', $userName)[0];
 
     /* Page title */
     .page-title-editor {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 3rem;
+      font-family: var(--editor-font);
+      font-size: calc(3rem * var(--editor-base-size));
       font-weight: 400;
       color: #FFFFFF;
       letter-spacing: -0.025em;
@@ -1511,9 +1514,9 @@ $firstName = explode(' ', $userName)[0];
 
     /* Text block */
     .block-text {
-      font-family: 'Inter', sans-serif;
+      font-family: var(--editor-font);
       color: #c4c4c8;
-      font-size: 1.0625rem;
+      font-size: calc(1.0625rem * var(--editor-base-size));
       line-height: 1.85;
       outline: none;
       width: 100%;
@@ -1537,9 +1540,9 @@ $firstName = explode(' ', $userName)[0];
 
     /* Heading block */
     .block-heading {
-      font-family: 'Inter', sans-serif;
+      font-family: var(--editor-font);
       color: #FFFFFF;
-      font-size: 1.625rem;
+      font-size: calc(1.625rem * var(--editor-base-size));
       font-weight: 700;
       letter-spacing: -0.02em;
       line-height: 1.3;
@@ -1615,7 +1618,7 @@ $firstName = explode(' ', $userName)[0];
     .checklist-label {
       flex: 1;
       color: #c4c4c8;
-      font-size: 1.0625rem;
+      font-size: calc(1.0625rem * var(--editor-base-size));
       line-height: 1.75;
       outline: none;
       min-height: 1.75em;
@@ -1993,17 +1996,16 @@ $firstName = explode(' ', $userName)[0];
       display: block;
     }
 
-    /* Workspace dropdown */
     #ws-dropdown {
       display: none;
       position: fixed;
-      z-index: 90;
-      background: #1c1c1f;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 9999;
+      background: #1c1c21;
+      border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 12px;
-      padding: 0.375rem;
-      width: 230px;
-      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
+      padding: 0.5rem;
+      width: 250px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
     }
 
     /* =====================================================================
@@ -2137,31 +2139,102 @@ $firstName = explode(' ', $userName)[0];
       min-width: 0;
     }
 
+    /* Mobile menu toggle button in topbar */
+    .btn-mobile-menu {
+      display: none;
+      background: transparent;
+      border: none;
+      color: #a1a1aa;
+      padding: 0.4rem;
+      margin-right: 0.25rem;
+      border-radius: 6px;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.15s ease, background 0.15s ease;
+    }
+
+    .btn-mobile-menu:hover {
+      color: #f4f4f5;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    /* Backdrop overlay */
+    .mobile-sidebar-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      z-index: 90;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .mobile-sidebar-backdrop.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
     /* =====================================================================
    RESPONSIVE
    ===================================================================== */
     @media (max-width: 768px) {
+      .btn-mobile-menu { display: flex; }
+
+      .editor-topbar { padding: 0 1rem; min-height: 52px; gap: 0.25rem; }
+      .sidebar-toggle-btn { display: none !important; }
+      .tabs-container { padding-left: 0; }
+
       .sidebar {
-        width: 0;
-        min-width: 0;
-        opacity: 0;
-        pointer-events: none;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 100;
+        transform: translateX(-100%);
+        width: 280px;
+        min-width: 280px;
+        display: flex !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.05);
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 12px 0 32px rgba(0, 0, 0, 0.5);
       }
 
-      .sidebar-toggle-btn {
-        left: 12px;
+      .sidebar.mobile-open {
+        transform: translateX(0);
       }
 
       .editor-content {
-        padding: 2.5rem 1.25rem 8rem;
+        padding: 2rem 1.25rem 6rem;
+      }
+
+      .editor-header-inner {
+        padding: 2.5rem 1.25rem 1rem;
+        max-width: 100%;
       }
 
       .page-title-editor {
-        font-size: 2rem;
+        font-size: calc(1.75rem * var(--editor-base-size));
       }
 
       .home-quick-actions {
         grid-template-columns: 1fr;
+      }
+
+      #customize-panel {
+        top: 60px;
+        right: 50%;
+        transform-origin: top center;
+        transform: translateX(50%) translateY(-8px) scale(0.96);
+        width: 90%;
+        max-width: 320px;
+      }
+      #customize-panel.open {
+        transform: translateX(50%) translateY(0) scale(1);
       }
     }
   </style>
@@ -2182,6 +2255,7 @@ $firstName = explode(' ', $userName)[0];
      APP SHELL
      ==================================================================== -->
   <div class="app-shell" id="app">
+    <div id="mobile-backdrop" class="mobile-sidebar-backdrop"></div>
 
     <!-- ==============================================================
        SIDEBAR
@@ -2301,6 +2375,15 @@ $firstName = explode(' ', $userName)[0];
 
       <!-- Topbar with tabs -->
       <header class="editor-topbar" id="editor-topbar">
+        <!-- Mobile menu button -->
+        <button id="btn-mobile-menu" class="btn-mobile-menu" title="Menu" aria-label="Menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+
         <!-- Tabs (scrollable) -->
         <div class="tabs-container" id="tabs-container">
           <!-- Home tab always first -->
@@ -2919,9 +3002,6 @@ $firstName = explode(' ', $userName)[0];
         night: { color: 'transparent', image: 'radial-gradient(ellipse at bottom right, rgba(99,102,241,0.09) 0%, #18181b 65%)', size: '100% 100%' },
       };
 
-      // Font size scale
-      const SIZE = { small: '0.875rem', default: '1rem', large: '1.2rem' };
-
       // Font family map
       const FONT = {
         serif: "'Cormorant Garamond','Playfair Display',Georgia,serif",
@@ -2930,23 +3010,20 @@ $firstName = explode(' ', $userName)[0];
       };
 
       function applyPrefs() {
-        // Background — applied to editorScroll (full-width visible area)
+        const root = document.documentElement;
+
+        // Background — applied to editorScroll 
         if (editorScroll) {
           const b = BG[prefs.bg] || BG.none;
           editorScroll.style.backgroundColor = b.color;
           editorScroll.style.backgroundImage = b.image;
           editorScroll.style.backgroundSize = b.size;
         }
-        // Font size — applied to editorContent (the writing column)
-        if (editorContent) {
-          editorContent.style.fontSize = SIZE[prefs.size] || SIZE.default;
-        }
-        // Font family
-        const blocksContainer = document.getElementById('blocks-container');
-        const titleEl = document.getElementById('page-title-editor');
-        const ff = FONT[prefs.font] || FONT.serif;
-        if (blocksContainer) blocksContainer.style.fontFamily = ff;
-        if (titleEl) titleEl.style.fontFamily = ff;
+        
+        // Font size and Font family scaled dynamically via CSS variables
+        const sizeMultipliers = { small: '0.875', default: '1', large: '1.2' };
+        root.style.setProperty('--editor-base-size', sizeMultipliers[prefs.size] || '1');
+        root.style.setProperty('--editor-font', FONT[prefs.font] || FONT.serif);
       }
 
       function syncActiveStates() {
@@ -2999,20 +3076,40 @@ $firstName = explode(' ', $userName)[0];
         });
       });
 
-      // Re-apply font whenever a page opens (Editor calls renderPage)
-      const origRenderPage = Editor.renderPage?.bind(Editor);
-      if (origRenderPage) {
-        // Patch via MutationObserver watching blocks-container changes
-        const observer = new MutationObserver(() => {
-          const blocksContainer = document.getElementById('blocks-container');
-          const titleEl = document.getElementById('page-title-editor');
-          const ff = FONT[prefs.font] || FONT.serif;
-          if (blocksContainer) blocksContainer.style.fontFamily = ff;
-          if (titleEl) titleEl.style.fontFamily = ff;
+      // MutationObserver removed: CSS Variables cascade and apply automatically!
+
+      // -------------------------------------------------------------
+      // Mobile sidebar toggle logic
+      // -------------------------------------------------------------
+      const btnMobileMenu = document.getElementById('btn-mobile-menu');
+      const mobileBackdrop = document.getElementById('mobile-backdrop');
+      const sidebar = document.getElementById('sidebar');
+
+      if (btnMobileMenu && mobileBackdrop && sidebar) {
+        btnMobileMenu.addEventListener('click', () => {
+          sidebar.classList.add('mobile-open');
+          mobileBackdrop.classList.add('show');
         });
-        const bc = document.getElementById('blocks-container');
-        if (bc) observer.observe(bc, { childList: true });
+
+        mobileBackdrop.addEventListener('click', () => {
+          sidebar.classList.remove('mobile-open');
+          mobileBackdrop.classList.remove('show');
+        });
+
+        // Close sidebar when clicking a navigation link on mobile
+        sidebar.addEventListener('click', (e) => {
+          if (window.innerWidth <= 768) {
+            const isNavLink = e.target.closest('.page-tree-row, .sidebar-nav-item, .sidebar-add-page, .btn-logout');
+            const isWorkspaceSwitcher = e.target.closest('#btn-workspace-switcher');
+            
+            if (isNavLink && !isWorkspaceSwitcher) {
+              sidebar.classList.remove('mobile-open');
+              mobileBackdrop.classList.remove('show');
+            }
+          }
+        });
       }
+
     })();
   </script>
 </body>
