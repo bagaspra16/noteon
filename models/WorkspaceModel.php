@@ -20,9 +20,19 @@ class WorkspaceModel
         $stmt = $db->prepare(
             'INSERT INTO workspaces (user_id, name) VALUES (?, ?)'
         );
-        $stmt->execute([$userId, $name]);
+        $success = $stmt->execute([$userId, $name]);
 
-        return self::findById((int) $db->lastInsertId());
+        if (!$success) {
+            return [];
+        }
+
+        $id = (int) $db->lastInsertId();
+        if ($id === 0) {
+            return [];
+        }
+
+        $ws = self::findById($id);
+        return $ws ?: [];
     }
 
     /**

@@ -260,16 +260,36 @@ const WorkspaceManager = (() => {
     if (e.target === e.currentTarget) closeModal();
   });
 
-  document.getElementById('btn-ws-create-submit').addEventListener('click', async () => {
-    const name = document.getElementById('ws-name-input').value.trim();
-    if (!name) { showError('Please enter a workspace name.'); return; }
-    await create(name);
+  document.getElementById('btn-ws-create-submit').addEventListener('click', async (e) => {
+    const btn = e.currentTarget;
+    const nameInput = document.getElementById('ws-name-input');
+    const name = nameInput.value.trim();
+    
+    if (!name) { 
+      showError('Please enter a workspace name.'); 
+      return; 
+    }
+
+    // Disable to prevent double-submit
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Creating...';
+    btn.style.opacity = '0.7';
+
+    try {
+      await create(name);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = originalText;
+      btn.style.opacity = '';
+    }
   });
 
   document.getElementById('ws-name-input').addEventListener('keydown', async (e) => {
     if (e.key === 'Enter') {
-      const name = e.target.value.trim();
-      if (name) await create(name);
+      const btn = document.getElementById('btn-ws-create-submit');
+      if (btn.disabled) return;
+      btn.click();
     }
   });
 

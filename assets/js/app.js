@@ -64,12 +64,34 @@ async function apiPost(url, body = {}) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     });
-    if (res.status === 401) { window.location.href = '/noteon/views/index.php'; return null; }
+
+    if (res.status === 401) {
+      window.location.href = '/noteon/views/index.php';
+      return null;
+    }
+
+    const contentType = res.headers.get('content-type');
     const text = await res.text();
+
+    if (!res.ok) {
+      console.error(`apiPost error ${res.status}: ${url}`, text);
+      try {
+        return JSON.parse(text); // Try to parse error JSON if available
+      } catch (e) {
+        return { success: false, error: `Server error (${res.status})` };
+      }
+    }
+
     if (!text) return null;
-    return JSON.parse(text);
+
+    if (contentType && contentType.includes('application/json')) {
+      return JSON.parse(text);
+    }
+
+    console.error('apiPost received non-JSON response:', text);
+    return null;
   } catch (err) {
-    console.error('apiPost error', url, err);
+    console.error('apiPost network/fatal error', url, err);
     return null;
   }
 }
@@ -80,12 +102,30 @@ async function apiPost(url, body = {}) {
 async function apiGet(url) {
   try {
     const res = await fetch(url);
-    if (res.status === 401) { window.location.href = '/noteon/views/index.php'; return null; }
+
+    if (res.status === 401) {
+      window.location.href = '/noteon/views/index.php';
+      return null;
+    }
+
+    const contentType = res.headers.get('content-type');
     const text = await res.text();
+
+    if (!res.ok) {
+      console.error(`apiGet error ${res.status}: ${url}`, text);
+      return null;
+    }
+
     if (!text) return null;
-    return JSON.parse(text);
+
+    if (contentType && contentType.includes('application/json')) {
+      return JSON.parse(text);
+    }
+
+    console.error('apiGet received non-JSON response:', text);
+    return null;
   } catch (err) {
-    console.error('apiGet error', url, err);
+    console.error('apiGet network/fatal error', url, err);
     return null;
   }
 }
