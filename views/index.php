@@ -9,7 +9,7 @@ session_start();
 
 // Already logged in — go straight to the editor
 if (isset($_SESSION['user_id'])) {
-  header('Location: /hagglenote/views/editor.php');
+  header('Location: /noteon/views/editor.php');
   exit;
 }
 ?>
@@ -26,7 +26,7 @@ if (isset($_SESSION['user_id'])) {
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Custom styles -->
-  <link rel="stylesheet" href="/hagglenote/assets/css/style.css?v=5">
+  <link rel="stylesheet" href="/noteon/assets/css/style.css?v=5">
 
   <style>
     /* Ensure html/body carry no extra margin */
@@ -400,7 +400,7 @@ if (isset($_SESSION['user_id'])) {
         btn.textContent = 'Signing in…';
 
         try {
-          const data = await apiPost('/hagglenote/api/auth.php?action=login', { email, password });
+          const data = await apiPost('/noteon/api/auth.php?action=login', { email, password });
           if (data.success) {
             window.location.href = data.redirect;
           } else {
@@ -435,7 +435,7 @@ if (isset($_SESSION['user_id'])) {
         btn.textContent = 'Creating account…';
 
         try {
-          const data = await apiPost('/hagglenote/api/auth.php?action=register', { name, email, password });
+          const data = await apiPost('/noteon/api/auth.php?action=register', { name, email, password });
           if (data.success) {
             window.location.href = data.redirect;
           } else {

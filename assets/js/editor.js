@@ -19,10 +19,10 @@
 
 const Editor = (() => {
 
-  let currentPage  = null;
+  let currentPage = null;
   let dragSrcBlock = null;
-  let slashTarget  = null;   // the block element that triggered slash menu
-  let slashActive  = false;
+  let slashTarget = null;   // the block element that triggered slash menu
+  let slashActive = false;
 
   // per-block debounced save functions
   const saveFns = new Map();
@@ -31,13 +31,13 @@ const Editor = (() => {
   // PUBLIC: Show empty state
   // ================================================================
   function showEmptyState() {
-    currentPage      = null;
+    currentPage = null;
     App.state.pageId = null;
 
     // Show home view, hide editor area
-    const homeView   = document.getElementById('home-view');
+    const homeView = document.getElementById('home-view');
     const editorArea = document.getElementById('editor-area');
-    if (homeView)   homeView.style.display   = 'block';
+    if (homeView) homeView.style.display = 'block';
     if (editorArea) editorArea.style.display = 'none';
     document.getElementById('page-editor')?.classList.remove('active');
     // Activate home tab
@@ -49,13 +49,13 @@ const Editor = (() => {
   // PUBLIC: Render a page (title + blocks) in the editor
   // ================================================================
   function renderPage(page) {
-    currentPage      = page;
+    currentPage = page;
     App.state.pageId = page.id;
 
     // Show editor area, hide home view
-    const homeView   = document.getElementById('home-view');
+    const homeView = document.getElementById('home-view');
     const editorArea = document.getElementById('editor-area');
-    if (homeView)   homeView.style.display   = 'none';
+    if (homeView) homeView.style.display = 'none';
     if (editorArea) editorArea.style.display = 'block';
     document.getElementById('page-editor').style.display = 'block';
 
@@ -85,7 +85,7 @@ const Editor = (() => {
     closeBlockTypePicker();
     closeSlashMenu();
     if (typeof closeBlockOptionsMenu === 'function') closeBlockOptionsMenu();
-    
+
     updateAddBlockVisibility();
 
     // Scroll to top
@@ -98,20 +98,20 @@ const Editor = (() => {
   // ================================================================
   function buildBlockEl(block) {
     const wrapper = document.createElement('div');
-    wrapper.className       = 'block-item';
+    wrapper.className = 'block-item';
     wrapper.dataset.blockId = block.id;
-    wrapper.dataset.type    = block.type;
-    wrapper.draggable       = true;
+    wrapper.dataset.type = block.type;
+    wrapper.draggable = true;
 
     // ---- Gutter (handle only)
     const gutter = document.createElement('div');
     gutter.className = 'block-gutter';
 
     const handle = document.createElement('span');
-    handle.className   = 'block-handle';
-    handle.title       = 'Click for options, drag to reorder';
-    handle.innerHTML   = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M8 6h.01M16 6h.01M8 12h.01M16 12h.01M8 18h.01M16 18h.01"/></svg>`;
-    
+    handle.className = 'block-handle';
+    handle.title = 'Click for options, drag to reorder';
+    handle.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M8 6h.01M16 6h.01M8 12h.01M16 12h.01M8 18h.01M16 18h.01"/></svg>`;
+
     handle.addEventListener('click', (e) => {
       e.stopPropagation();
       openBlockOptionsMenu(wrapper, handle);
@@ -123,8 +123,8 @@ const Editor = (() => {
     const body = document.createElement('div');
     body.className = 'block-body';
 
-    if (block.type === 'text')      body.appendChild(buildTextEl(block));
-    if (block.type === 'heading')   body.appendChild(buildHeadingEl(block));
+    if (block.type === 'text') body.appendChild(buildTextEl(block));
+    if (block.type === 'heading') body.appendChild(buildHeadingEl(block));
     if (block.type === 'checklist') body.appendChild(buildChecklistEl(block));
 
     wrapper.appendChild(gutter);
@@ -140,11 +140,11 @@ const Editor = (() => {
   // ================================================================
   function buildTextEl(block) {
     const el = document.createElement('div');
-    el.className       = 'block-text';
+    el.className = 'block-text';
     el.contentEditable = 'true';
-    el.spellcheck      = false;
+    el.spellcheck = false;
     el.dataset.blockId = block.id;
-    el.dataset.ph      = 'Type something… (or / for commands)';
+    el.dataset.ph = 'Type something… (or / for commands)';
     el.setAttribute('data-ph', 'Type something…  (or / for commands)');
 
     if (block.content) el.textContent = block.content;
@@ -158,9 +158,9 @@ const Editor = (() => {
   // ================================================================
   function buildHeadingEl(block) {
     const el = document.createElement('div');
-    el.className       = 'block-heading';
+    el.className = 'block-heading';
     el.contentEditable = 'true';
-    el.spellcheck      = false;
+    el.spellcheck = false;
     el.dataset.blockId = block.id;
     el.setAttribute('data-ph', 'Heading…');
 
@@ -175,7 +175,7 @@ const Editor = (() => {
   // ================================================================
   function buildChecklistEl(block) {
     const container = document.createElement('div');
-    container.className       = 'checklist-block';
+    container.className = 'checklist-block';
     container.dataset.blockId = block.id;
 
     (block.items || []).forEach(item => {
@@ -183,8 +183,8 @@ const Editor = (() => {
     });
 
     const addBtn = document.createElement('button');
-    addBtn.className   = 'btn-add-checklist-item';
-    addBtn.innerHTML   = `<span style="font-size:0.8125rem;">+</span> Add item`;
+    addBtn.className = 'btn-add-checklist-item';
+    addBtn.innerHTML = `<span style="font-size:0.8125rem;">+</span> Add item`;
     addBtn.addEventListener('click', () =>
       addChecklistItem(block.id, container, addBtn)
     );
@@ -195,32 +195,32 @@ const Editor = (() => {
 
   function buildChecklistRow(item, blockId) {
     const row = document.createElement('div');
-    row.className      = 'checklist-row';
+    row.className = 'checklist-row';
     row.dataset.itemId = item.id;
 
     const cbx = document.createElement('input');
-    cbx.type      = 'checkbox';
+    cbx.type = 'checkbox';
     cbx.className = 'checklist-checkbox';
-    cbx.id        = `ci-${item.id}`;
-    cbx.checked   = item.is_checked == 1 || item.is_checked === true;
+    cbx.id = `ci-${item.id}`;
+    cbx.checked = item.is_checked == 1 || item.is_checked === true;
 
     const lbl = document.createElement('div');
-    lbl.className       = 'checklist-label' + (cbx.checked ? ' checked' : '');
+    lbl.className = 'checklist-label' + (cbx.checked ? ' checked' : '');
     lbl.contentEditable = 'true';
-    lbl.spellcheck      = false;
-    lbl.dataset.itemId  = item.id;
+    lbl.spellcheck = false;
+    lbl.dataset.itemId = item.id;
     if (item.content) lbl.textContent = item.content;
 
     const delBtn = document.createElement('button');
-    delBtn.className   = 'btn-delete-item';
-    delBtn.title       = 'Remove';
+    delBtn.className = 'btn-delete-item';
+    delBtn.title = 'Remove';
     delBtn.textContent = '×';
     delBtn.addEventListener('click', () => removeChecklistItem(item.id, row));
 
     // Toggle checkbox
     cbx.addEventListener('change', async () => {
       lbl.classList.toggle('checked', cbx.checked);
-      await apiPost('/hagglenote/api/block.php?action=toggle_item', {
+      await apiPost('/noteon/api/block.php?action=toggle_item', {
         item_id: item.id, is_checked: cbx.checked,
       });
     });
@@ -228,7 +228,7 @@ const Editor = (() => {
     // Save label on input
     const saveLabel = debounce(async () => {
       setSaveState('saving');
-      await apiPost('/hagglenote/api/block.php?action=update_checklist_item', {
+      await apiPost('/noteon/api/block.php?action=update_checklist_item', {
         item_id: item.id, content: lbl.textContent,
       });
       setSaveState('saved');
@@ -241,7 +241,7 @@ const Editor = (() => {
       if (e.key === 'Enter') {
         e.preventDefault();
         const container = document.querySelector(`.checklist-block[data-block-id="${blockId}"]`);
-        const addBtn    = container?.querySelector('.btn-add-checklist-item');
+        const addBtn = container?.querySelector('.btn-add-checklist-item');
         if (addBtn) await addChecklistItem(blockId, container, addBtn);
       }
       // Backspace on empty → remove item
@@ -268,7 +268,7 @@ const Editor = (() => {
       const raw = el.textContent;
       setSaveState('saving');
       try {
-        await apiPost('/hagglenote/api/block.php?action=update', {
+        await apiPost('/noteon/api/block.php?action=update', {
           id: blockId, content: raw,
         });
         setSaveState('saved');
@@ -294,9 +294,9 @@ const Editor = (() => {
         e.preventDefault();
         closeSlashMenu();
         if (currentPage) {
-          const wrapper  = el.closest('.block-item');
+          const wrapper = el.closest('.block-item');
           const allBlocks = Array.from(document.querySelectorAll('#blocks-container .block-item'));
-          const idx      = allBlocks.indexOf(wrapper);
+          const idx = allBlocks.indexOf(wrapper);
           await createBlockAtIndex(currentPage.id, 'text', idx + 1);
         }
         return;
@@ -306,10 +306,10 @@ const Editor = (() => {
       if (e.key === 'Backspace' && el.textContent === '') {
         e.preventDefault();
         closeSlashMenu();
-        const wrapper    = el.closest('.block-item');
-        const allBlocks  = Array.from(document.querySelectorAll('#blocks-container .block-item'));
-        const idx        = allBlocks.indexOf(wrapper);
-        const prevBlock  = allBlocks[idx - 1];
+        const wrapper = el.closest('.block-item');
+        const allBlocks = Array.from(document.querySelectorAll('#blocks-container .block-item'));
+        const idx = allBlocks.indexOf(wrapper);
+        const prevBlock = allBlocks[idx - 1];
 
         await deleteBlock(blockId, wrapper, false);
 
@@ -384,7 +384,7 @@ const Editor = (() => {
     // Position right below the element
     const rect = targetEl.getBoundingClientRect();
     slashMenu.style.left = `${rect.left}px`;
-    slashMenu.style.top  = `${rect.bottom + 4}px`;
+    slashMenu.style.top = `${rect.bottom + 4}px`;
     slashMenu.classList.add('show');
 
     // Reset active item
@@ -427,7 +427,7 @@ const Editor = (() => {
 
     const rect = handleEl.getBoundingClientRect();
     blockOptionsMenu.style.left = `${rect.left}px`;
-    blockOptionsMenu.style.top  = `${rect.bottom + 4}px`;
+    blockOptionsMenu.style.top = `${rect.bottom + 4}px`;
     blockOptionsMenu.classList.add('show');
   }
 
@@ -461,7 +461,7 @@ const Editor = (() => {
       closeBlockOptionsMenu();
     }
   });
-  
+
   // ================================================================
   // Add Block Area Visibility
   // ================================================================
@@ -500,10 +500,10 @@ const Editor = (() => {
 
     // Ask the server to update the type: we'll delete + recreate at same position
     const allBlocks = Array.from(document.querySelectorAll('#blocks-container .block-item'));
-    const pos       = allBlocks.indexOf(wrapper) + 1; // 1-based
+    const pos = allBlocks.indexOf(wrapper) + 1; // 1-based
 
     // Delete old block
-    await apiPost('/hagglenote/api/block.php?action=delete', { id: blockId });
+    await apiPost('/noteon/api/block.php?action=delete', { id: blockId });
     wrapper.remove();
 
     // Create new block of desired type at same position
@@ -516,7 +516,7 @@ const Editor = (() => {
   // Create a block at a specific index (0-based) in the container
   // ================================================================
   async function createBlockAtIndex(pageId, type, index, focus = true) {
-    const data = await apiPost('/hagglenote/api/block.php?action=create', {
+    const data = await apiPost('/noteon/api/block.php?action=create', {
       page_id: pageId, type, content: '',
     });
 
@@ -525,9 +525,9 @@ const Editor = (() => {
     const block = data.block;
     if (type === 'checklist') block.items = [];
 
-    const el  = buildBlockEl(block);
+    const el = buildBlockEl(block);
     const container = document.getElementById('blocks-container');
-    const siblings  = Array.from(container.children);
+    const siblings = Array.from(container.children);
 
     if (index >= siblings.length) {
       container.appendChild(el);
@@ -560,7 +560,7 @@ const Editor = (() => {
   // Add checklist item
   // ================================================================
   async function addChecklistItem(blockId, container, addBtn) {
-    const data = await apiPost('/hagglenote/api/block.php?action=add_checklist_item', {
+    const data = await apiPost('/noteon/api/block.php?action=add_checklist_item', {
       block_id: blockId, content: '',
     });
     if (!data?.success) { showToast('Failed to add item.', 'error'); return; }
@@ -576,7 +576,7 @@ const Editor = (() => {
   // Remove a checklist item
   // ================================================================
   async function removeChecklistItem(itemId, rowEl) {
-    await apiPost('/hagglenote/api/block.php?action=delete_checklist_item', { item_id: itemId });
+    await apiPost('/noteon/api/block.php?action=delete_checklist_item', { item_id: itemId });
     rowEl.remove();
   }
 
@@ -584,11 +584,11 @@ const Editor = (() => {
   // Delete a block
   // ================================================================
   async function deleteBlock(blockId, wrapperEl, animate = true) {
-    await apiPost('/hagglenote/api/block.php?action=delete', { id: blockId });
+    await apiPost('/noteon/api/block.php?action=delete', { id: blockId });
 
     if (animate) {
-      wrapperEl.style.opacity    = '0';
-      wrapperEl.style.transform  = 'translateX(-8px)';
+      wrapperEl.style.opacity = '0';
+      wrapperEl.style.transform = 'translateX(-8px)';
       wrapperEl.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
       await new Promise(r => setTimeout(r, 150));
     }
@@ -607,7 +607,7 @@ const Editor = (() => {
       document.querySelectorAll('#blocks-container .block-item')
     ).map(el => el.dataset.blockId);
 
-    await apiPost('/hagglenote/api/block.php?action=reorder', {
+    await apiPost('/noteon/api/block.php?action=reorder', {
       page_id: currentPage.id, order,
     });
   }
@@ -617,7 +617,7 @@ const Editor = (() => {
   // ================================================================
   function updateWordCount() {
     const container = document.getElementById('blocks-container');
-    const titleEl   = document.getElementById('page-title-editor');
+    const titleEl = document.getElementById('page-title-editor');
     if (!container) return;
 
     let text = (titleEl?.textContent || '') + ' ';
@@ -626,15 +626,15 @@ const Editor = (() => {
     });
 
     const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
-    const el    = document.getElementById('page-meta-words');
-    const sep   = document.getElementById('page-meta-sep');
+    const el = document.getElementById('page-meta-words');
+    const sep = document.getElementById('page-meta-sep');
 
     if (el && words > 0) {
-      el.textContent    = `${words} word${words !== 1 ? 's' : ''}`;
-      el.style.display  = 'inline';
+      el.textContent = `${words} word${words !== 1 ? 's' : ''}`;
+      el.style.display = 'inline';
       if (sep) sep.style.display = 'inline';
     } else if (el) {
-      el.style.display  = 'none';
+      el.style.display = 'none';
       if (sep) sep.style.display = 'none';
     }
   }
@@ -644,7 +644,7 @@ const Editor = (() => {
   // ================================================================
   function bindDragEvents(el) {
     el.addEventListener('dragstart', (e) => {
-      dragSrcBlock         = el;
+      dragSrcBlock = el;
       App.state.isDragging = true;
       e.dataTransfer.effectAllowed = 'move';
       setTimeout(() => (el.style.opacity = '0.35'), 0);
@@ -652,7 +652,7 @@ const Editor = (() => {
 
     el.addEventListener('dragend', () => {
       App.state.isDragging = false;
-      el.style.opacity     = '';
+      el.style.opacity = '';
       document.querySelectorAll('.block-item').forEach(b => b.classList.remove('drag-over'));
       saveBlockOrder();
     });
@@ -672,12 +672,12 @@ const Editor = (() => {
     el.addEventListener('drop', (e) => {
       e.preventDefault();
       if (!dragSrcBlock || dragSrcBlock === el) return;
-      const container  = document.getElementById('blocks-container');
-      const children   = Array.from(container.children);
-      const srcIdx     = children.indexOf(dragSrcBlock);
-      const tgtIdx     = children.indexOf(el);
+      const container = document.getElementById('blocks-container');
+      const children = Array.from(container.children);
+      const srcIdx = children.indexOf(dragSrcBlock);
+      const tgtIdx = children.indexOf(el);
       if (srcIdx < tgtIdx) el.after(dragSrcBlock);
-      else                  el.before(dragSrcBlock);
+      else el.before(dragSrcBlock);
       el.classList.remove('drag-over');
     });
   }
@@ -687,7 +687,7 @@ const Editor = (() => {
   // ================================================================
   function moveCursorToEnd(el) {
     const range = document.createRange();
-    const sel   = window.getSelection();
+    const sel = window.getSelection();
     range.selectNodeContents(el);
     range.collapse(false);
     sel.removeAllRanges();
@@ -703,7 +703,7 @@ const Editor = (() => {
     if (!currentPage) return;
     setSaveState('saving');
     try {
-      await apiPost('/hagglenote/api/page.php?action=update', {
+      await apiPost('/noteon/api/page.php?action=update', {
         id: currentPage.id, title: title || 'Untitled',
       });
       setSaveState('saved');
@@ -743,8 +743,8 @@ const Editor = (() => {
   // ================================================================
   // "Add block" button and block type picker
   // ================================================================
-  const btnAddBlock  = document.getElementById('btn-add-block');
-  const typePicker   = document.getElementById('block-type-picker');
+  const btnAddBlock = document.getElementById('btn-add-block');
+  const typePicker = document.getElementById('block-type-picker');
 
   function closeBlockTypePicker() { typePicker.classList.remove('show'); }
 

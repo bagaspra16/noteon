@@ -9,9 +9,9 @@
 session_start();
 
 if (isset($_SESSION['user_id'])) {
-    header('Location: /hagglenote/views/editor.php');
+    header('Location: /noteon/views/editor.php');
 } else {
-    header('Location: /hagglenote/views/index.php');
+    header('Location: /noteon/views/index.php');
 }
 
 exit;

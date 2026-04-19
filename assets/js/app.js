@@ -11,22 +11,22 @@
 const App = {
   state: {
     workspaceId: null,   // currently active workspace id
-    pageId:      null,   // currently open page id
-    isDragging:  false,
+    pageId: null,   // currently open page id
+    isDragging: false,
   },
 
   // Custom dialog
   confirm(title, message, onConfirm, confirmText = 'Delete', type = 'danger') {
     const modal = document.getElementById('modal-confirm');
     if (!modal) return;
-    
+
     document.getElementById('confirm-title').textContent = title;
     document.getElementById('confirm-msg').innerHTML = message;
-    
+
     const btnOk = document.getElementById('btn-confirm-ok');
     btnOk.textContent = confirmText;
     if (type === 'danger') {
-      btnOk.style.background = '#ef4444'; 
+      btnOk.style.background = '#ef4444';
       btnOk.style.color = '#fff';
     } else {
       btnOk.style.background = '#3f3f46';
@@ -36,14 +36,14 @@ const App = {
     modal.classList.add('active');
 
     const doConfirm = () => { cleanup(); onConfirm(); };
-    const doCancel  = () => { cleanup(); };
+    const doCancel = () => { cleanup(); };
 
     const cancelBtn = document.getElementById('btn-confirm-cancel');
-    
+
     // Add fresh listeners
     btnOk.addEventListener('click', doConfirm);
     cancelBtn.addEventListener('click', doCancel);
-    
+
     const cleanup = () => {
       modal.classList.remove('active');
       btnOk.removeEventListener('click', doConfirm);
@@ -59,12 +59,12 @@ window.App = App;
 // ====================================================================
 async function apiPost(url, body = {}) {
   try {
-    const res  = await fetch(url, {
-      method:  'POST',
+    const res = await fetch(url, {
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(body),
+      body: JSON.stringify(body),
     });
-    if (res.status === 401) { window.location.href = '/hagglenote/views/index.php'; return null; }
+    if (res.status === 401) { window.location.href = '/noteon/views/index.php'; return null; }
     const text = await res.text();
     if (!text) return null;
     return JSON.parse(text);
@@ -79,8 +79,8 @@ async function apiPost(url, body = {}) {
 // ====================================================================
 async function apiGet(url) {
   try {
-    const res  = await fetch(url);
-    if (res.status === 401) { window.location.href = '/hagglenote/views/index.php'; return null; }
+    const res = await fetch(url);
+    if (res.status === 401) { window.location.href = '/noteon/views/index.php'; return null; }
     const text = await res.text();
     if (!text) return null;
     return JSON.parse(text);
@@ -97,7 +97,7 @@ function showToast(message, type = 'default') {
   const toast = document.getElementById('toast');
   if (!toast) { console.warn('Toast missing:', message); return; }
   toast.textContent = message;
-  toast.className   = `toast ${type} show`;
+  toast.className = `toast ${type} show`;
   clearTimeout(toast._t);
   toast._t = setTimeout(() => toast.classList.remove('show'), 2800);
 }
@@ -118,8 +118,8 @@ function debounce(fn, delay = 800) {
 // ====================================================================
 function setSaveState(state) {
   const indicator = document.getElementById('save-indicator');
-  const spinner   = document.getElementById('save-spinner');
-  const text      = document.getElementById('save-text');
+  const spinner = document.getElementById('save-spinner');
+  const text = document.getElementById('save-text');
 
   indicator.classList.add('visible');
   indicator.classList.remove('saved', 'error');
@@ -146,9 +146,9 @@ function setSaveState(state) {
 // Logout
 // ====================================================================
 document.getElementById('btn-logout')?.addEventListener('click', () => {
-  App.confirm('Log Out', 'Are you sure you want to log out of HaggleNote?', async () => {
-    await apiGet('/hagglenote/api/auth.php?action=logout');
-    window.location.href = '/hagglenote/views/index.php';
+  App.confirm('Log Out', 'Are you sure you want to log out of noteon?', async () => {
+    await apiGet('/noteon/api/auth.php?action=logout');
+    window.location.href = '/noteon/views/index.php';
   }, 'Log out');
 });
 

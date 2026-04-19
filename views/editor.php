@@ -4,7 +4,7 @@
  */
 session_start();
 if (!isset($_SESSION['user_id'])) {
-  header('Location: /hagglenote/views/index.php');
+  header('Location: /noteon/views/index.php');
   exit;
 }
 $userName = htmlspecialchars($_SESSION['user_name'] ?? 'You');
@@ -17,7 +17,7 @@ $firstName = explode(' ', $userName)[0];
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HaggleNote — Workspace</title>
+  <title>noteon — Workspace</title>
   <meta name="robots" content="noindex">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -732,9 +732,9 @@ $firstName = explode(' ', $userName)[0];
       right: 12px;
       width: 272px;
       background: #1c1c1e;
-      border: 1px solid rgba(255,255,255,0.08);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 12px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
       z-index: 200;
       padding: 1rem;
       display: none;
@@ -744,11 +744,20 @@ $firstName = explode(' ', $userName)[0];
       animation: panelIn 0.15s ease;
     }
 
-    #customize-panel.open { display: flex; }
+    #customize-panel.open {
+      display: flex;
+    }
 
     @keyframes panelIn {
-      from { opacity: 0; transform: translateY(-6px) scale(0.98); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
+      from {
+        opacity: 0;
+        transform: translateY(-6px) scale(0.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     .cp-section-title {
@@ -771,7 +780,7 @@ $firstName = explode(' ', $userName)[0];
       flex: 1;
       padding: 6px 0;
       border-radius: 7px;
-      border: 1px solid rgba(255,255,255,0.08);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       background: transparent;
       color: #71717a;
       cursor: pointer;
@@ -783,10 +792,23 @@ $firstName = explode(' ', $userName)[0];
       gap: 2px;
     }
 
-    .cp-font-size-btn:hover { background: rgba(255,255,255,0.05); color: #a1a1aa; }
-    .cp-font-size-btn.active { border-color: #FFAB00; background: rgba(255,171,0,0.1); color: #FFAB00; }
+    .cp-font-size-btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: #a1a1aa;
+    }
 
-    .cp-font-size-btn .fs-label { font-size: 0.6rem; letter-spacing: 0.05em; text-transform: uppercase; }
+    .cp-font-size-btn.active {
+      border-color: #FFAB00;
+      background: rgba(255, 171, 0, 0.1);
+      color: #FFAB00;
+    }
+
+    .cp-font-size-btn .fs-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
     .cp-font-size-btn .fs-preview {
       font-family: 'Cormorant Garamond', serif;
       line-height: 1;
@@ -799,7 +821,7 @@ $firstName = explode(' ', $userName)[0];
       gap: 10px;
       padding: 8px 10px;
       border-radius: 7px;
-      border: 1px solid rgba(255,255,255,0.06);
+      border: 1px solid rgba(255, 255, 255, 0.06);
       background: transparent;
       color: #a1a1aa;
       cursor: pointer;
@@ -810,8 +832,16 @@ $firstName = explode(' ', $userName)[0];
       margin-bottom: 4px;
     }
 
-    .cp-font-option:hover { background: rgba(255,255,255,0.04); color: #d4d4d8; }
-    .cp-font-option.active { border-color: #FFAB00; background: rgba(255,171,0,0.08); color: #FFAB00; }
+    .cp-font-option:hover {
+      background: rgba(255, 255, 255, 0.04);
+      color: #d4d4d8;
+    }
+
+    .cp-font-option.active {
+      border-color: #FFAB00;
+      background: rgba(255, 171, 0, 0.08);
+      color: #FFAB00;
+    }
 
     .cp-font-option .font-swatch {
       font-size: 1.1rem;
@@ -819,8 +849,16 @@ $firstName = explode(' ', $userName)[0];
       width: 28px;
       flex-shrink: 0;
     }
-    .cp-font-option .font-name { font-weight: 500; }
-    .cp-font-option .font-desc { font-size: 0.7rem; color: #52525b; margin-top: 1px; }
+
+    .cp-font-option .font-name {
+      font-weight: 500;
+    }
+
+    .cp-font-option .font-desc {
+      font-size: 0.7rem;
+      color: #52525b;
+      margin-top: 1px;
+    }
 
     /* Background pattern grid */
     .cp-bg-grid {
@@ -839,8 +877,13 @@ $firstName = explode(' ', $userName)[0];
       position: relative;
     }
 
-    .cp-bg-option:hover { transform: scale(1.06); }
-    .cp-bg-option.active { border-color: #FFAB00; }
+    .cp-bg-option:hover {
+      transform: scale(1.06);
+    }
+
+    .cp-bg-option.active {
+      border-color: #FFAB00;
+    }
 
     .cp-bg-option .bg-preview {
       width: 100%;
@@ -849,7 +892,7 @@ $firstName = explode(' ', $userName)[0];
       align-items: center;
       justify-content: center;
       font-size: 0.6rem;
-      color: rgba(255,255,255,0.4);
+      color: rgba(255, 255, 255, 0.4);
       letter-spacing: 0.03em;
     }
 
@@ -2348,25 +2391,39 @@ $firstName = explode(' ', $userName)[0];
               <div class="bg-preview" style="background:#18181b;">Clean</div>
             </div>
             <div class="cp-bg-option" data-bg="grid" title="Grid">
-              <div class="bg-preview" style="background:#18181b; background-image: linear-gradient(rgba(255,255,255,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.06) 1px,transparent 1px); background-size:16px 16px;"></div>
+              <div class="bg-preview"
+                style="background:#18181b; background-image: linear-gradient(rgba(255,255,255,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.06) 1px,transparent 1px); background-size:16px 16px;">
+              </div>
             </div>
             <div class="cp-bg-option" data-bg="dots" title="Dots">
-              <div class="bg-preview" style="background:#18181b; background-image:radial-gradient(rgba(255,255,255,0.15) 1px,transparent 1px); background-size:12px 12px;"></div>
+              <div class="bg-preview"
+                style="background:#18181b; background-image:radial-gradient(rgba(255,255,255,0.15) 1px,transparent 1px); background-size:12px 12px;">
+              </div>
             </div>
             <div class="cp-bg-option" data-bg="lines" title="Lines">
-              <div class="bg-preview" style="background:#18181b; background-image:linear-gradient(rgba(255,255,255,0.06) 1px,transparent 1px); background-size:100% 18px;"></div>
+              <div class="bg-preview"
+                style="background:#18181b; background-image:linear-gradient(rgba(255,255,255,0.06) 1px,transparent 1px); background-size:100% 18px;">
+              </div>
             </div>
             <div class="cp-bg-option" data-bg="crosshatch" title="Cross">
-              <div class="bg-preview" style="background:#18181b; background-image:linear-gradient(45deg,rgba(255,255,255,0.04) 25%,transparent 25%),linear-gradient(-45deg,rgba(255,255,255,0.04) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,rgba(255,255,255,0.04) 75%),linear-gradient(-45deg,transparent 75%,rgba(255,255,255,0.04) 75%); background-size:12px 12px; background-position:0 0,0 6px,6px -6px,-6px 0;"></div>
+              <div class="bg-preview"
+                style="background:#18181b; background-image:linear-gradient(45deg,rgba(255,255,255,0.04) 25%,transparent 25%),linear-gradient(-45deg,rgba(255,255,255,0.04) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,rgba(255,255,255,0.04) 75%),linear-gradient(-45deg,transparent 75%,rgba(255,255,255,0.04) 75%); background-size:12px 12px; background-position:0 0,0 6px,6px -6px,-6px 0;">
+              </div>
             </div>
             <div class="cp-bg-option" data-bg="waves" title="Waves">
-              <div class="bg-preview" style="background:#18181b; background-image:repeating-linear-gradient(0deg,transparent,transparent 14px,rgba(255,255,255,0.05) 14px,rgba(255,255,255,0.05) 15px),repeating-linear-gradient(90deg,transparent,transparent 14px,rgba(255,255,255,0.03) 14px,rgba(255,255,255,0.03) 15px);"></div>
+              <div class="bg-preview"
+                style="background:#18181b; background-image:repeating-linear-gradient(0deg,transparent,transparent 14px,rgba(255,255,255,0.05) 14px,rgba(255,255,255,0.05) 15px),repeating-linear-gradient(90deg,transparent,transparent 14px,rgba(255,255,255,0.03) 14px,rgba(255,255,255,0.03) 15px);">
+              </div>
             </div>
             <div class="cp-bg-option" data-bg="amber" title="Warm">
-              <div class="bg-preview" style="background: radial-gradient(ellipse at top left, rgba(255,171,0,0.08) 0%, #18181b 60%);">Warm</div>
+              <div class="bg-preview"
+                style="background: radial-gradient(ellipse at top left, rgba(255,171,0,0.08) 0%, #18181b 60%);">Warm
+              </div>
             </div>
             <div class="cp-bg-option" data-bg="night" title="Night">
-              <div class="bg-preview" style="background: radial-gradient(ellipse at bottom right, rgba(99,102,241,0.1) 0%, #18181b 65%);">Night</div>
+              <div class="bg-preview"
+                style="background: radial-gradient(ellipse at bottom right, rgba(99,102,241,0.1) 0%, #18181b 65%);">
+                Night</div>
             </div>
           </div>
         </div>
@@ -2556,46 +2613,82 @@ $firstName = explode(' ', $userName)[0];
             style="display:block;font-size:0.8125rem;font-weight:500;color:#a1a1aa;margin-bottom:0.5rem;">Icon</label>
           <div style="position: relative;">
             <input id="section-icon-input" type="text" class="modal-input" placeholder="📁"
-              style="margin-bottom:1.25rem; width: 4rem; text-align: center; font-size: 1.25rem; cursor:pointer; user-select:none;" readonly value="📁">
-            
-            <div id="section-emoji-picker" style="display:none; position:absolute; top:calc(100% - 1rem); left:0; width:180px; max-height:160px; overflow-y:auto; background:#27272a; border: 1px solid rgba(255,255,255,0.1); border-radius:8px; padding:0.5rem; grid-template-columns: repeat(5, 1fr); gap: 0.25rem; z-index:100; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
+              style="margin-bottom:1.25rem; width: 4rem; text-align: center; font-size: 1.25rem; cursor:pointer; user-select:none;"
+              readonly value="📁">
+
+            <div id="section-emoji-picker"
+              style="display:none; position:absolute; top:calc(100% - 1rem); left:0; width:180px; max-height:160px; overflow-y:auto; background:#27272a; border: 1px solid rgba(255,255,255,0.1); border-radius:8px; padding:0.5rem; grid-template-columns: repeat(5, 1fr); gap: 0.25rem; z-index:100; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
               <!-- Study/Work/Notes -->
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">📁</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">📄</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">📝</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">📓</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">📚</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">📌</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">✂️</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">📎</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">💻</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">📱</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">📅</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">⏰</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">💡</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🧠</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🚀</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🎯</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">📈</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">💼</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🔥</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">✨</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">💵</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🛒</span>
-              
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">📁</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">📄</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">📝</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">📓</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">📚</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">📌</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">✂️</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">📎</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">💻</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">📱</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">📅</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">⏰</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">💡</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🧠</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🚀</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🎯</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">📈</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">💼</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🔥</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">✨</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">💵</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🛒</span>
+
               <!-- Daily Life -->
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">☕️</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🍔</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🍎</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🏠</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🚗</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">✈️</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🏖️</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🎵</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🎮</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🏀</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🏋️</span>
-              <span class="modal-emoji-btn" style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">❤️</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">☕️</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🍔</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🍎</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🏠</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🚗</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">✈️</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🏖️</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🎵</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🎮</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🏀</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">🏋️</span>
+              <span class="modal-emoji-btn"
+                style="cursor:pointer; padding:0.25rem; text-align:center; font-size:1.25rem; transition:transform 0.1s; border-radius:4px;">❤️</span>
             </div>
           </div>
         </div>
@@ -2687,10 +2780,10 @@ $firstName = explode(' ', $userName)[0];
   <div id="toast" class="toast"></div>
 
   <!-- Scripts -->
-  <script src="/hagglenote/assets/js/app.js?v=9"></script>
-  <script src="/hagglenote/assets/js/workspace.js?v=9"></script>
-  <script src="/hagglenote/assets/js/page.js?v=9"></script>
-  <script src="/hagglenote/assets/js/editor.js?v=9"></script>
+  <script src="/noteon/assets/js/app.js?v=9"></script>
+  <script src="/noteon/assets/js/workspace.js?v=9"></script>
+  <script src="/noteon/assets/js/page.js?v=9"></script>
+  <script src="/noteon/assets/js/editor.js?v=9"></script>
 
   <script>
     /* ====================================================================
@@ -2758,7 +2851,7 @@ $firstName = explode(' ', $userName)[0];
         if (av) av.textContent = val.charAt(0).toUpperCase();
         if (typeof App !== 'undefined' && App.state?.workspaceId) {
           try {
-            await fetch('/hagglenote/api/workspace.php?action=rename', {
+            await fetch('/noteon/api/workspace.php?action=rename', {
               method: 'POST', headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ id: App.state.workspaceId, name: val })
             });
@@ -2802,28 +2895,28 @@ $firstName = explode(' ', $userName)[0];
        CUSTOMIZE PANEL — three-dots menu
        ==================================================================== */
     (() => {
-      const panel         = document.getElementById('customize-panel');
-      const btn           = document.getElementById('btn-topbar-more');
+      const panel = document.getElementById('customize-panel');
+      const btn = document.getElementById('btn-topbar-more');
       const editorContent = document.getElementById('editor-content');
-      const editorScroll  = document.getElementById('editor-scroll');
+      const editorScroll = document.getElementById('editor-scroll');
 
       // Saved prefs
       const prefs = {
         size: localStorage.getItem('cp-size') || 'default',
         font: localStorage.getItem('cp-font') || 'serif',
-        bg:   localStorage.getItem('cp-bg')   || 'none',
+        bg: localStorage.getItem('cp-bg') || 'none',
       };
 
       // Background CSS map (split into parts for safe property assignment)
       const BG = {
-        none:       { color: '#18181b', image: 'none',    size: 'auto' },
-        grid:       { color: '#18181b', image: 'linear-gradient(rgba(255,255,255,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.05) 1px,transparent 1px)', size: '22px 22px' },
-        dots:       { color: '#18181b', image: 'radial-gradient(rgba(255,255,255,0.13) 1px,transparent 1px)', size: '18px 18px' },
-        lines:      { color: '#18181b', image: 'linear-gradient(rgba(255,255,255,0.05) 1px,transparent 1px)', size: '100% 26px' },
+        none: { color: '#18181b', image: 'none', size: 'auto' },
+        grid: { color: '#18181b', image: 'linear-gradient(rgba(255,255,255,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.05) 1px,transparent 1px)', size: '22px 22px' },
+        dots: { color: '#18181b', image: 'radial-gradient(rgba(255,255,255,0.13) 1px,transparent 1px)', size: '18px 18px' },
+        lines: { color: '#18181b', image: 'linear-gradient(rgba(255,255,255,0.05) 1px,transparent 1px)', size: '100% 26px' },
         crosshatch: { color: '#18181b', image: 'linear-gradient(45deg,rgba(255,255,255,0.03) 25%,transparent 25%),linear-gradient(-45deg,rgba(255,255,255,0.03) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,rgba(255,255,255,0.03) 75%),linear-gradient(-45deg,transparent 75%,rgba(255,255,255,0.03) 75%)', size: '16px 16px' },
-        waves:      { color: '#18181b', image: 'repeating-linear-gradient(0deg,transparent,transparent 20px,rgba(255,255,255,0.04) 20px,rgba(255,255,255,0.04) 21px),repeating-linear-gradient(90deg,transparent,transparent 20px,rgba(255,255,255,0.02) 20px,rgba(255,255,255,0.02) 21px)', size: 'auto' },
-        amber:      { color: 'transparent', image: 'radial-gradient(ellipse at top left, rgba(255,171,0,0.07) 0%, #18181b 60%)', size: '100% 100%' },
-        night:      { color: 'transparent', image: 'radial-gradient(ellipse at bottom right, rgba(99,102,241,0.09) 0%, #18181b 65%)', size: '100% 100%' },
+        waves: { color: '#18181b', image: 'repeating-linear-gradient(0deg,transparent,transparent 20px,rgba(255,255,255,0.04) 20px,rgba(255,255,255,0.04) 21px),repeating-linear-gradient(90deg,transparent,transparent 20px,rgba(255,255,255,0.02) 20px,rgba(255,255,255,0.02) 21px)', size: 'auto' },
+        amber: { color: 'transparent', image: 'radial-gradient(ellipse at top left, rgba(255,171,0,0.07) 0%, #18181b 60%)', size: '100% 100%' },
+        night: { color: 'transparent', image: 'radial-gradient(ellipse at bottom right, rgba(99,102,241,0.09) 0%, #18181b 65%)', size: '100% 100%' },
       };
 
       // Font size scale
@@ -2832,8 +2925,8 @@ $firstName = explode(' ', $userName)[0];
       // Font family map
       const FONT = {
         serif: "'Cormorant Garamond','Playfair Display',Georgia,serif",
-        sans:  "'Inter',system-ui,sans-serif",
-        mono:  "'JetBrains Mono','Fira Code',monospace",
+        sans: "'Inter',system-ui,sans-serif",
+        mono: "'JetBrains Mono','Fira Code',monospace",
       };
 
       function applyPrefs() {
@@ -2842,7 +2935,7 @@ $firstName = explode(' ', $userName)[0];
           const b = BG[prefs.bg] || BG.none;
           editorScroll.style.backgroundColor = b.color;
           editorScroll.style.backgroundImage = b.image;
-          editorScroll.style.backgroundSize  = b.size;
+          editorScroll.style.backgroundSize = b.size;
         }
         // Font size — applied to editorContent (the writing column)
         if (editorContent) {

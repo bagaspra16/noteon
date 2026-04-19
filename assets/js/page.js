@@ -13,7 +13,7 @@
 
 const PageManager = (() => {
 
-  let pages    = [];   // flat array of all pages in the workspace
+  let pages = [];   // flat array of all pages in the workspace
   let sections = [];   // flat array of all sections
   let activeId = null; // currently open page id
   let openTabs = [];   // array of { id, title, icon, wsName, parent }
@@ -22,19 +22,19 @@ const PageManager = (() => {
   // LOAD pages for a workspace and render sidebar + home
   // ============================================================
   async function loadPages(workspaceId) {
-    pages    = [];
+    pages = [];
     sections = [];
     activeId = null;
 
     const [pageData, sectionData] = await Promise.all([
-      apiGet(`/hagglenote/api/page.php?action=list&workspace_id=${workspaceId}`),
-      apiGet(`/hagglenote/api/section.php?action=list&workspace_id=${workspaceId}`)
+      apiGet(`/noteon/api/page.php?action=list&workspace_id=${workspaceId}`),
+      apiGet(`/noteon/api/section.php?action=list&workspace_id=${workspaceId}`)
     ]);
 
     if (pageData && pageData.pages) {
       pages = pageData.pages;
     }
-    
+
     if (sectionData && sectionData.sections) {
       sections = sectionData.sections;
     }
@@ -55,7 +55,7 @@ const PageManager = (() => {
     if (!container) return;
     container.innerHTML = '';
 
-    const query    = (filterQuery || '').toLowerCase().trim();
+    const query = (filterQuery || '').toLowerCase().trim();
     const filtered = query
       ? pages.filter(p => (p.title || 'Untitled').toLowerCase().includes(query))
       : pages;
@@ -157,14 +157,14 @@ const PageManager = (() => {
       : pages.filter(p => String(p.parent_id) === String(page.id));
 
     const wrapper = document.createElement('div');
-    wrapper.className      = 'page-tree-item';
+    wrapper.className = 'page-tree-item';
     wrapper.dataset.pageId = page.id;
 
     // Row
     const row = document.createElement('div');
-    row.className     = 'page-tree-row' + (String(page.id) === String(activeId) ? ' active' : '');
+    row.className = 'page-tree-row' + (String(page.id) === String(activeId) ? ' active' : '');
     row.style.paddingLeft = `${0.5 + depth * 0.875}rem`;
-    row.dataset.pageId    = page.id;
+    row.dataset.pageId = page.id;
 
     // Expand toggle
     const toggle = document.createElement('span');
@@ -173,7 +173,7 @@ const PageManager = (() => {
 
     // Icon
     const icon = document.createElement('span');
-    icon.className   = 'page-icon';
+    icon.className = 'page-icon';
     icon.textContent = page.icon || '📄';
 
     // Title (with optional highlight)
@@ -189,14 +189,14 @@ const PageManager = (() => {
 
     const addSubBtn = document.createElement('button');
     addSubBtn.className = 'page-action-btn';
-    addSubBtn.title     = 'Add sub-page';
+    addSubBtn.title = 'Add sub-page';
     addSubBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>`;
     // Preserve section_id of parent if any
     addSubBtn.addEventListener('click', e => { e.stopPropagation(); createPage(App.state.workspaceId, page.id, page.section_id); });
 
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'page-action-btn delete';
-    deleteBtn.title     = 'Delete page';
+    deleteBtn.title = 'Delete page';
     deleteBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>`;
     deleteBtn.addEventListener('click', e => { e.stopPropagation(); deletePage(page.id); });
 
@@ -241,7 +241,7 @@ const PageManager = (() => {
     const recList = document.getElementById('home-recent-list');
     const allList = document.getElementById('home-all-list');
     const emptyEl = document.getElementById('home-recent-empty');
-    const allSec  = document.getElementById('home-all-section');
+    const allSec = document.getElementById('home-all-section');
 
     if (!recList) return;
 
@@ -294,11 +294,11 @@ const PageManager = (() => {
   // SEARCH — immediate filter as user types
   // ============================================================
   function initSearch() {
-    const input    = document.getElementById('sidebar-search-input');
+    const input = document.getElementById('sidebar-search-input');
     const clearBtn = document.getElementById('sidebar-search-clear');
-    const box      = document.getElementById('sidebar-search-box');
-    const results  = document.getElementById('sidebar-search-results');
-    const body     = document.getElementById('sidebar-body');
+    const box = document.getElementById('sidebar-search-box');
+    const results = document.getElementById('sidebar-search-results');
+    const body = document.getElementById('sidebar-body');
     if (!input) return;
 
     function doSearch(q) {
@@ -309,12 +309,12 @@ const PageManager = (() => {
       if (!query) {
         // Restore normal sidebar
         if (results) results.classList.remove('active');
-        if (body)    body.style.display = '';
+        if (body) body.style.display = '';
         return;
       }
 
       // Hide normal sidebar, show search results pane immediately
-      if (body)    body.style.display = 'none';
+      if (body) body.style.display = 'none';
       if (results) { results.classList.add('active'); results.innerHTML = ''; }
       if (!results) return;
 
@@ -332,9 +332,9 @@ const PageManager = (() => {
       }
 
       matched.forEach(page => {
-        const parent  = page.parent_id ? pages.find(p => String(p.id) === String(page.parent_id)) : null;
-        const wsName  = document.getElementById('ws-name-display')?.textContent || '';
-        const path    = parent ? `${wsName} / ${parent.title || 'Untitled'}` : wsName;
+        const parent = page.parent_id ? pages.find(p => String(p.id) === String(page.parent_id)) : null;
+        const wsName = document.getElementById('ws-name-display')?.textContent || '';
+        const path = parent ? `${wsName} / ${parent.title || 'Untitled'}` : wsName;
         const isActive = String(page.id) === String(activeId);
 
         const item = document.createElement('div');
@@ -358,7 +358,7 @@ const PageManager = (() => {
       clearBtn?.classList.remove('visible');
       box?.classList.remove('focused');
       if (results) results.classList.remove('active');
-      if (body)    body.style.display = '';
+      if (body) body.style.display = '';
     }
 
     // Trigger immediately on input — results appear as user types
@@ -391,12 +391,12 @@ const PageManager = (() => {
   // TABS management
   // ============================================================
   function addOrActivateTab(page) {
-    const tabId    = String(page.id);
-    const wsName   = document.getElementById('ws-name-display')?.textContent || '';
-    const parent   = page.parent_id
+    const tabId = String(page.id);
+    const wsName = document.getElementById('ws-name-display')?.textContent || '';
+    const parent = page.parent_id
       ? pages.find(p => String(p.id) === String(page.parent_id))
       : null;
-    const tabData  = { id: tabId, title: page.title || 'Untitled', icon: page.icon || '📄', wsName, parent };
+    const tabData = { id: tabId, title: page.title || 'Untitled', icon: page.icon || '📄', wsName, parent };
 
     const existingIdx = openTabs.findIndex(t => t.id === tabId);
     if (existingIdx === -1) {
@@ -425,9 +425,9 @@ const PageManager = (() => {
       const tooltip = pathParts.join(' / ');
 
       const el = document.createElement('div');
-      el.className     = 'editor-tab' + (tab.id === activePgId ? ' active' : '');
+      el.className = 'editor-tab' + (tab.id === activePgId ? ' active' : '');
       el.dataset.tabId = tab.id;
-      el.title         = tooltip;
+      el.title = tooltip;
 
       el.innerHTML = `
         <span class="tab-icon">${tab.icon}</span>
@@ -484,9 +484,9 @@ const PageManager = (() => {
     activeId = null;
 
     // Switch display
-    const homeView   = document.getElementById('home-view');
+    const homeView = document.getElementById('home-view');
     const editorArea = document.getElementById('editor-area');
-    if (homeView)   homeView.style.display   = 'block';
+    if (homeView) homeView.style.display = 'block';
     if (editorArea) editorArea.style.display = 'none';
 
     // Tab state: only home tab active
@@ -524,19 +524,19 @@ const PageManager = (() => {
     document.getElementById('btn-home')?.classList.remove('active');
 
     // ── Show editor area, hide home ──────────────────────────
-    const homeView   = document.getElementById('home-view');
+    const homeView = document.getElementById('home-view');
     const editorArea = document.getElementById('editor-area');
-    if (homeView)   homeView.style.display   = 'none';
+    if (homeView) homeView.style.display = 'none';
     if (editorArea) editorArea.style.display = 'block';
 
     // Show skeleton, hide page content until data arrives
-    const skeleton   = document.getElementById('page-skeleton');
+    const skeleton = document.getElementById('page-skeleton');
     const pageEditor = document.getElementById('page-editor');
-    if (skeleton)   skeleton.style.display   = 'block';
+    if (skeleton) skeleton.style.display = 'block';
     if (pageEditor) pageEditor.style.display = 'none';
 
     // ── Fetch page data ──────────────────────────────────────
-    const data = await apiGet(`/hagglenote/api/page.php?action=get&id=${pageId}`);
+    const data = await apiGet(`/noteon/api/page.php?action=get&id=${pageId}`);
     if (skeleton) skeleton.style.display = 'none';
 
     if (!data || !data.page) {
@@ -552,7 +552,7 @@ const PageManager = (() => {
     Editor.renderPage(data.page);
 
     // ── Defensive: ensure correct display state after render ─
-    if (homeView)   homeView.style.display   = 'none';
+    if (homeView) homeView.style.display = 'none';
     if (editorArea) editorArea.style.display = 'block';
     if (pageEditor) pageEditor.style.display = 'block';
   }
@@ -566,15 +566,15 @@ const PageManager = (() => {
       return;
     }
 
-    const data = await apiPost('/hagglenote/api/page.php?action=create', {
+    const data = await apiPost('/noteon/api/page.php?action=create', {
       workspace_id: workspaceId,
-      parent_id:    parentId,
-      section_id:   sectionId,
-      title:        'Untitled',
+      parent_id: parentId,
+      section_id: sectionId,
+      title: 'Untitled',
     });
 
-    if (!data)          { showToast('Failed to create page (network error).', 'error'); return; }
-    if (!data.success)  { showToast(data.error || 'Failed to create page.', 'error');  return; }
+    if (!data) { showToast('Failed to create page (network error).', 'error'); return; }
+    if (!data.success) { showToast(data.error || 'Failed to create page.', 'error'); return; }
 
     pages.push(data.page);
     renderSidebar();
@@ -595,23 +595,23 @@ const PageManager = (() => {
   // ============================================================
   // SECTION CRUD (MODAL HOOKS)
   // ============================================================
-  
+
   let currentAction = null; // 'create' or 'rename'
   let currentSectionId = null;
 
   function openSectionModal(action, id = null, name = '', icon = '📁') {
     currentAction = action;
     currentSectionId = id;
-    
+
     document.getElementById('section-modal-title').textContent = action === 'create' ? 'New Section' : 'Rename Section';
     document.getElementById('btn-section-submit').textContent = action === 'create' ? 'Create section' : 'Save section';
-    
+
     const input = document.getElementById('section-name-input');
     const iconInput = document.getElementById('section-icon-input');
-    
+
     input.value = name;
     iconInput.value = icon || '📁';
-    
+
     document.getElementById('modal-section').classList.add('active');
     input.focus();
   }
@@ -658,31 +658,31 @@ const PageManager = (() => {
   document.getElementById('btn-section-submit')?.addEventListener('click', async () => {
     const name = document.getElementById('section-name-input').value.trim();
     const icon = document.getElementById('section-icon-input').value.trim() || '📁';
-    
+
     if (!name || !App.state.workspaceId) return;
 
     if (currentAction === 'create') {
-      const data = await apiPost('/hagglenote/api/section.php?action=create', {
+      const data = await apiPost('/noteon/api/section.php?action=create', {
         workspace_id: App.state.workspaceId,
         name: name,
         icon: icon
       });
       if (data && data.success) await loadPages(App.state.workspaceId);
     } else if (currentAction === 'rename' && currentSectionId) {
-      const data = await apiPost('/hagglenote/api/section.php?action=rename', {
+      const data = await apiPost('/noteon/api/section.php?action=rename', {
         id: currentSectionId,
         name: name,
         icon: icon
       });
       if (data && data.success) await loadPages(App.state.workspaceId);
     }
-    
+
     closeSectionModal();
   });
 
   // Modal Cancel/Close buttons
   document.getElementById('btn-close-section-modal')?.addEventListener('click', closeSectionModal);
-  
+
   // Enter key support for modal
   function handleSectionEnter(e) {
     if (e.key === 'Enter') document.getElementById('btn-section-submit').click();
@@ -705,12 +705,12 @@ const PageManager = (() => {
 
   async function deleteSection(sectionId) {
     if (!App.state.workspaceId) return;
-    
+
     App.confirm(
       'Delete Section',
       'Are you sure you want to delete this section?<br>Pages inside will become uncategorized.',
       async () => {
-        const data = await apiPost('/hagglenote/api/section.php?action=delete', {
+        const data = await apiPost('/noteon/api/section.php?action=delete', {
           id: sectionId
         });
         if (data && data.success) {
@@ -728,12 +728,12 @@ const PageManager = (() => {
       'Delete Page',
       'Are you sure you want to delete this page and all its sub-pages?<br>This cannot be undone.',
       async () => {
-        const data = await apiPost('/hagglenote/api/page.php?action=delete', { id: pageId });
+        const data = await apiPost('/noteon/api/page.php?action=delete', { id: pageId });
         if (!data || !data.success) { showToast('Failed to delete page.', 'error'); return; }
 
         const toRemove = new Set();
         collectDescendants(pageId, toRemove);
-        pages    = pages.filter(p => !toRemove.has(String(p.id)));
+        pages = pages.filter(p => !toRemove.has(String(p.id)));
         openTabs = openTabs.filter(t => !toRemove.has(String(t.id)));
 
         if (toRemove.has(String(activeId))) {
@@ -783,7 +783,7 @@ const PageManager = (() => {
   function collectDescendants(parentId, set) {
     set.add(String(parentId));
     pages.filter(p => String(p.parent_id) === String(parentId))
-         .forEach(p => collectDescendants(p.id, set));
+      .forEach(p => collectDescendants(p.id, set));
   }
 
   function highlightText(text, query) {

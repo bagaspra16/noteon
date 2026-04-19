@@ -14,7 +14,7 @@ const WorkspaceManager = (() => {
   // Init: load all workspaces and set the active one
   // ------------------------------------------------------------------
   async function init() {
-    const data = await apiGet('/hagglenote/api/workspace.php?action=list');
+    const data = await apiGet('/noteon/api/workspace.php?action=list');
     if (!data) {
       console.error('WorkspaceManager.init: no data returned (API error or not logged in)');
       return;
@@ -43,9 +43,9 @@ const WorkspaceManager = (() => {
   function setActive(ws) {
     App.state.workspaceId = ws.id;
 
-    const nameEl   = document.getElementById('ws-name-display');
+    const nameEl = document.getElementById('ws-name-display');
     const avatarEl = document.getElementById('ws-avatar');
-    if (nameEl)   nameEl.textContent   = ws.name;
+    if (nameEl) nameEl.textContent = ws.name;
     if (avatarEl) avatarEl.textContent = ws.name.charAt(0).toUpperCase();
 
     // PageManager is defined in page.js which loads after workspace.js,
@@ -85,7 +85,7 @@ const WorkspaceManager = (() => {
   // Create a new workspace
   // ------------------------------------------------------------------
   async function create(name) {
-    const data = await apiPost('/hagglenote/api/workspace.php?action=create', { name });
+    const data = await apiPost('/noteon/api/workspace.php?action=create', { name });
 
     if (!data || !data.success) {
       showError(data?.error || 'Failed to create workspace.');
@@ -149,16 +149,16 @@ const WorkspaceManager = (() => {
       const editBtn = document.createElement('button');
       editBtn.title = 'Rename';
       editBtn.style.cssText = 'width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:5px;border:none;background:transparent;color:#71717a;cursor:pointer;transition:background 0.1s,color 0.1s;';
-      editBtn.onmouseenter = () => { editBtn.style.background='rgba(255,255,255,0.08)'; editBtn.style.color='#f4f4f5'; };
-      editBtn.onmouseleave = () => { editBtn.style.background='transparent'; editBtn.style.color='#71717a'; };
+      editBtn.onmouseenter = () => { editBtn.style.background = 'rgba(255,255,255,0.08)'; editBtn.style.color = '#f4f4f5'; };
+      editBtn.onmouseleave = () => { editBtn.style.background = 'transparent'; editBtn.style.color = '#71717a'; };
       editBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`;
       editBtn.addEventListener('click', (e) => { e.stopPropagation(); closeDropdown(); openRenameModal(ws); });
 
       const delBtn = document.createElement('button');
       delBtn.title = 'Delete';
       delBtn.style.cssText = 'width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:5px;border:none;background:transparent;color:#71717a;cursor:pointer;transition:background 0.1s,color 0.1s;';
-      delBtn.onmouseenter = () => { delBtn.style.background='rgba(220,38,38,0.12)'; delBtn.style.color='#f87171'; };
-      delBtn.onmouseleave = () => { delBtn.style.background='transparent'; delBtn.style.color='#71717a'; };
+      delBtn.onmouseenter = () => { delBtn.style.background = 'rgba(220,38,38,0.12)'; delBtn.style.color = '#f87171'; };
+      delBtn.onmouseleave = () => { delBtn.style.background = 'transparent'; delBtn.style.color = '#71717a'; };
       delBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>`;
       delBtn.addEventListener('click', (e) => { e.stopPropagation(); closeDropdown(); confirmDeleteWorkspace(ws); });
 
@@ -182,8 +182,8 @@ const WorkspaceManager = (() => {
       'color:#52525b; font-size:0.75rem; font-family:Inter,sans-serif;',
       'transition: background 0.12s ease, color 0.12s ease;',
     ].join('');
-    addBtn.onmouseenter = () => { addBtn.style.background='rgba(255,255,255,0.05)'; addBtn.style.color='#a1a1aa'; };
-    addBtn.onmouseleave = () => { addBtn.style.background='transparent'; addBtn.style.color='#52525b'; };
+    addBtn.onmouseenter = () => { addBtn.style.background = 'rgba(255,255,255,0.05)'; addBtn.style.color = '#a1a1aa'; };
+    addBtn.onmouseleave = () => { addBtn.style.background = 'transparent'; addBtn.style.color = '#52525b'; };
     addBtn.innerHTML = `
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
         <path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
@@ -201,12 +201,12 @@ const WorkspaceManager = (() => {
 
   function openDropdown() {
     renderDropdown();
-    const dropdown  = document.getElementById('ws-dropdown');
-    const switcher  = document.getElementById('btn-workspace-switcher');
-    const rect      = switcher.getBoundingClientRect();
+    const dropdown = document.getElementById('ws-dropdown');
+    const switcher = document.getElementById('btn-workspace-switcher');
+    const rect = switcher.getBoundingClientRect();
 
     dropdown.style.left = `${rect.left}px`;
-    dropdown.style.top  = `${rect.bottom + 6}px`;
+    dropdown.style.top = `${rect.bottom + 6}px`;
     dropdown.style.display = 'block';
     dropdownOpen = true;
   }
@@ -272,7 +272,7 @@ const WorkspaceManager = (() => {
     if (!name) { errEl.textContent = 'Please enter a name.'; errEl.classList.add('show'); return; }
     if (!renameTargetWs) return;
 
-    const data = await apiPost('/hagglenote/api/workspace.php?action=rename', { id: renameTargetWs.id, name });
+    const data = await apiPost('/noteon/api/workspace.php?action=rename', { id: renameTargetWs.id, name });
     if (!data || !data.success) {
       errEl.textContent = data?.error || 'Failed to rename.';
       errEl.classList.add('show');
@@ -298,7 +298,7 @@ const WorkspaceManager = (() => {
       'Delete Workspace',
       `Delete <strong>${ws.name}</strong>?<br>All pages and content inside will be permanently deleted.`,
       async () => {
-        const data = await apiPost('/hagglenote/api/workspace.php?action=delete', { id: ws.id });
+        const data = await apiPost('/noteon/api/workspace.php?action=delete', { id: ws.id });
         if (!data || !data.success) { showToast('Failed to delete workspace.', 'error'); return; }
 
         workspaces = workspaces.filter(w => w.id !== ws.id);

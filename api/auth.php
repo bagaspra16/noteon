@@ -21,10 +21,10 @@ switch ($action) {
     // Register a new user and create a default workspace
     // ----------------------------------------------------------
     case 'register':
-        $data     = json_decode(file_get_contents('php://input'), true) ?? [];
-        $name     = trim($data['name']     ?? '');
-        $email    = trim($data['email']    ?? '');
-        $password =       $data['password'] ?? '';
+        $data = json_decode(file_get_contents('php://input'), true) ?? [];
+        $name = trim($data['name'] ?? '');
+        $email = trim($data['email'] ?? '');
+        $password = $data['password'] ?? '';
 
         if (!$name || !$email || !$password) {
             http_response_code(400);
@@ -50,16 +50,16 @@ switch ($action) {
             exit;
         }
 
-        $userId    = UserModel::register($name, $email, $password);
+        $userId = UserModel::register($name, $email, $password);
         $workspace = WorkspaceModel::create($userId, $name . "'s Workspace");
 
-        $_SESSION['user_id']      = $userId;
-        $_SESSION['user_name']    = $name;
+        $_SESSION['user_id'] = $userId;
+        $_SESSION['user_name'] = $name;
         $_SESSION['workspace_id'] = $workspace['id'];
 
         echo json_encode([
-            'success'  => true,
-            'redirect' => '/hagglenote/views/editor.php',
+            'success' => true,
+            'redirect' => '/noteon/views/editor.php',
         ]);
         break;
 
@@ -67,9 +67,9 @@ switch ($action) {
     // Login an existing user
     // ----------------------------------------------------------
     case 'login':
-        $data     = json_decode(file_get_contents('php://input'), true) ?? [];
-        $email    = trim($data['email']    ?? '');
-        $password =       $data['password'] ?? '';
+        $data = json_decode(file_get_contents('php://input'), true) ?? [];
+        $email = trim($data['email'] ?? '');
+        $password = $data['password'] ?? '';
 
         if (!$email || !$password) {
             http_response_code(400);
@@ -87,7 +87,7 @@ switch ($action) {
 
         $workspaces = WorkspaceModel::listByUser($user['id']);
 
-        $_SESSION['user_id']   = $user['id'];
+        $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_name'] = $user['name'];
 
         if (!empty($workspaces)) {
@@ -95,8 +95,8 @@ switch ($action) {
         }
 
         echo json_encode([
-            'success'  => true,
-            'redirect' => '/hagglenote/views/editor.php',
+            'success' => true,
+            'redirect' => '/noteon/views/editor.php',
         ]);
         break;
 
@@ -106,8 +106,8 @@ switch ($action) {
     case 'logout':
         session_destroy();
         echo json_encode([
-            'success'  => true,
-            'redirect' => '/hagglenote/views/index.php',
+            'success' => true,
+            'redirect' => '/noteon/views/index.php',
         ]);
         break;
 
@@ -119,7 +119,7 @@ switch ($action) {
             echo json_encode([
                 'authenticated' => true,
                 'user' => [
-                    'id'   => $_SESSION['user_id'],
+                    'id' => $_SESSION['user_id'],
                     'name' => $_SESSION['user_name'],
                 ],
             ]);
