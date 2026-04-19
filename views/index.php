@@ -19,9 +19,10 @@ if (isset($_SESSION['user_id'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Noteon — Your Workspace, Simplified</title>
+  <title>Noteon — Your Workspace, being Simplified</title>
   <meta name="description"
     content="Noteon is a clean, distraction-free workspace for capturing ideas and organizing everything in one place.">
+  <link rel="icon" type="image/png" href="/noteon/noteon.png">
 
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
